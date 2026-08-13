@@ -1,0 +1,15 @@
+name:"node-backend-standards"
+description: "core architectural rules and constraints for the Node.js backend application"
+version: "1.0.0"
+intent_keywords:
+-"node"
+-"express"
+-"backend"
+-"route"
+-"controller"
+-"middlewares"
+-"model"
+-"dao"
+-"utility"
+
+instruction_files:"instructions.md"
