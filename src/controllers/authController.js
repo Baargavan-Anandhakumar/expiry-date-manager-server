@@ -39,7 +39,6 @@ const authController = {
             response.cookie('jwtToken', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
-                domain: 'localhost',
                 path: '/'
             });
 
@@ -53,6 +52,32 @@ const authController = {
             });
         } catch (error) {
             return response.status(400).json({ message: error.message });
+        }
+    },
+
+    logout: async (request, response) => {
+        try {
+            response.clearCookie('jwtToken', {
+                path: '/'
+            });
+            return response.status(200).json({ message: 'User logged out successfully' });
+        } catch (error) {
+            return response.status(500).json({ message: 'Error logging out' });
+        }
+    },
+
+    getMe: async (request, response) => {
+        // req.user is set by authMiddleware
+        try {
+            return response.status(200).json({
+                user: {
+                    _id: request.user._id,
+                    name: request.user.name,
+                    email: request.user.email
+                }
+            });
+        } catch (error) {
+            return response.status(500).json({ message: 'Server error' });
         }
     }
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 const authController = require('../controllers/authController');
+const { protect } = require('../utils/authMiddleware');
 
 const router = express.Router();
 
@@ -92,5 +93,33 @@ router.post(
     ],
     authController.login
 );
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     summary: Logout an existing user
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: User logged out successfully
+ *       500:
+ *         description: Error logging out
+ */
+router.post('/logout', authController.logout);
+
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Get current logged in user
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Current user details
+ *       401:
+ *         description: Not authorized
+ */
+router.get('/me', protect, authController.getMe);
 
 module.exports = router;

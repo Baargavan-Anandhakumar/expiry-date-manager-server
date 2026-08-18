@@ -2,7 +2,7 @@
   "name": "expiry-date-express-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,6 +11,14 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adityasolge93/expiry-date-express-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adityasolge93/expiry-date-express-server/issues"
+  },
+  "homepage": "https://github.com/adityasolge93/expiry-date-express-server#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
