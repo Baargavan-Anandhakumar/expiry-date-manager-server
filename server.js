@@ -13,8 +13,14 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 // Middleware
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'https://expiry-date-manager-client26.netlify.app'
+];
+
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    origin: allowedOrigins,
     credentials: true
 }));
 app.use(express.json());
@@ -31,6 +37,19 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+
+// Handle 404 Route Not Found
+app.use((req, res, next) => {
+    res.status(404).json({ message: 'Route not found' });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error('Global Server Error:', err);
+    res.status(err.status || 500).json({ 
+        message: err.message || 'Internal Server Error' 
+    });
+});
 
 // MongoDB Connection and Start Server
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/expiry-date-manager')
