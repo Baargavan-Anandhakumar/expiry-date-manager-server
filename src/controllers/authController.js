@@ -12,8 +12,24 @@ const authController = {
 
         try {
             const user = await authService.registerUser(name, email, password);
+            
+            const jwt = require('jsonwebtoken');
+            const token = jwt.sign(
+                { name: user.name, email: user.email, _id: user._id },
+                process.env.JWT_SECRET || 'fallback_secret',
+                { expiresIn: '1h' }
+            );
+
+            response.cookie('jwtToken', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                path: '/'
+            });
+
             return response.status(201).json({
                 message: 'User registered successfully',
+                token,
                 user: {
                     _id: user._id,
                     name: user.name,
@@ -45,6 +61,7 @@ const authController = {
 
             return response.status(200).json({
                 message: 'User authenticated',
+                token,
                 user: {
                     _id: user._id,
                     name: user.name,
